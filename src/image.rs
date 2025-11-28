@@ -1,5 +1,5 @@
-use image::error::ImageResult;
-use std::vec::Vec;
+use image::error::{ImageError, ImageResult};
+use std::{io::ErrorKind, vec::Vec};
 #[derive(Clone, Copy, Debug)]
 struct Pix {
     r: u8,
@@ -33,6 +33,23 @@ impl Image {
             })
             .collect();
         return Ok(Self { data, dim });
+    }
+
+    pub fn write(&self, path: &str) -> ImageResult<()> {
+        let raw_data: Vec<u8> = self
+            .data
+            .iter()
+            .flat_map(|p| [p.r, p.g, p.b, p.a])
+            .collect();
+
+        let dim = &self.dim;
+        let out_img =
+            image::ImageBuffer::<image::Rgba<u8>, _>::from_raw(dim.w, dim.h, raw_data).ok_or(
+                std::io::Error::new(ErrorKind::Other, "Internal processing function error"),
+            )?;
+        out_img.save(path)?;
+
+        Ok(())
     }
 }
 

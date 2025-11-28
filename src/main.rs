@@ -16,6 +16,7 @@ fn main() -> anyhow::Result<ExitCode> {
         }
     };
     println!("{:?}", config);
-    let _ = Image::open(config.source())?;
+    let img = Image::open(config.source())?;
+    img.write(config.dest())?;
     Ok(ExitCode::SUCCESS)
 }
