@@ -9,8 +9,8 @@ struct Pix {
 }
 
 struct Dimension {
-    w: u8,
-    h: u8,
+    w: u32,
+    h: u32,
 }
 pub struct Image {
     dim: Dimension,
@@ -19,16 +19,32 @@ pub struct Image {
 
 impl Image {
     pub fn open(path: &str) -> ImageResult<Self> {
-        return Ok(Self {
-            data: vec![],
-            ..Default::default()
-        });
+        let img = image::open(path)?.to_rgba8();
+        let dim = img.dimensions().into();
+        let raw = img.into_raw();
+
+        let data: Vec<Pix> = raw
+            .chunks_exact(4)
+            .map(|dot| Pix {
+                r: dot[0],
+                g: dot[1],
+                b: dot[2],
+                a: dot[3],
+            })
+            .collect();
+        return Ok(Self { data, dim });
     }
 }
 
 impl Default for Dimension {
     fn default() -> Self {
         Self { w: 0, h: 0 }
+    }
+}
+
+impl From<(u32, u32)> for Dimension {
+    fn from((w, h): (u32, u32)) -> Self {
+        Self { w, h }
     }
 }
 

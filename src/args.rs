@@ -29,9 +29,13 @@ impl Args {
             dest.push_str(DEST_SUFF);
             dest
         };
-        Ok(Self {
-            source: parsed.source.trim().to_string(),
-            dest,
-        })
+        let source = parsed.source.trim().to_string();
+        Ok(Self { source, dest })
+    }
+    pub fn source(&self) -> &str {
+        &self.source
+    }
+    pub fn dest(&self) -> &str {
+        &self.dest
     }
 }
