@@ -1,11 +1,11 @@
 use image::error::{ImageError, ImageResult};
 use std::{io::ErrorKind, vec::Vec};
 #[derive(Clone, Copy, Debug)]
-struct Pix {
-    r: u8,
-    g: u8,
-    b: u8,
-    a: u8,
+pub struct Pix {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: u8,
 }
 
 struct Dimension {
@@ -49,6 +49,14 @@ impl Image {
             )?;
         out_img.save(path)?;
 
+        Ok(())
+    }
+
+    pub fn map_apply_per_pixel<F>(&mut self, oper: F) -> std::io::Result<()>
+    where
+        F: Fn(Pix) -> Pix,
+    {
+        self.data.iter_mut().for_each(|x| *x = oper(*x));
         Ok(())
     }
 }
