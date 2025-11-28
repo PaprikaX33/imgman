@@ -1,5 +1,7 @@
 use clap::Parser;
 
+const DEST_SUFF: &str = ".png";
+
 #[derive(Parser, Debug)]
 #[command(name = "imgman")]
 #[command(author = "Paprika")]
@@ -9,17 +11,27 @@ use clap::Parser;
     long_about = "An image manipulating program for experimenting with tranparency"
 )]
 pub struct Args {
-    #[arg(long, short, value_name = "SOURCE FILE")]
-    #[arg(help = "Source File")]
-    #[arg(visible_aliases=["src"])]
+    #[arg(value_name = "SOURCE")]
+    #[arg(help = "Source Image")]
     source: String,
-    #[arg(long, short, value_name = "DESTINATION FILE", default_value_t = String::from("dest.png"))]
-    #[arg(help = "Destination File")]
+    #[arg(value_name = "DESTINATION", default_value_t = String::from("manip.png"))]
+    #[arg(help = "Destination Image")]
     dest: String,
 }
 
 impl Args {
     pub fn get_args() -> Result<Self, clap::error::Error> {
-        Self::try_parse_from(wild::args())
+        let parsed = Self::try_parse_from(wild::args())?;
+        let mut dest = parsed.dest.trim().to_string();
+        let dest = if dest.ends_with(DEST_SUFF) {
+            dest
+        } else {
+            dest.push_str(DEST_SUFF);
+            dest
+        };
+        Ok(Self {
+            source: parsed.source.trim().to_string(),
+            dest,
+        })
     }
 }

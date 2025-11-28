@@ -15,5 +15,6 @@ fn main() -> anyhow::Result<ExitCode> {
             }
         }
     };
+    println!("{:?}", config);
     Ok(ExitCode::SUCCESS)
 }
