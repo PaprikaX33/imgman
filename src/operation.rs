@@ -12,3 +12,14 @@ pub fn grayscale(pix: Pix) -> Pix {
         a: 0xff,
     }
 }
+
+pub fn grayscale_in_alph(pix: Pix, colval: u8) -> Pix {
+    let (r, g, b, _a) = pix.to_tuple();
+    let lum = (((r as u32) * 76 + (g as u32) * 150 + (b as u32) * 29) >> 8) as u8;
+    Pix {
+        r: colval,
+        g: colval,
+        b: colval,
+        a: lum,
+    }
+}
