@@ -52,7 +52,7 @@ impl Image {
         Ok(())
     }
 
-    pub fn map_apply_per_pixel<F>(&mut self, oper: F) -> std::io::Result<()>
+    pub fn apply_per_pixel<F>(&mut self, oper: F) -> std::io::Result<()>
     where
         F: Fn(Pix) -> Pix,
     {
@@ -79,5 +79,11 @@ impl Default for Image {
             dim: Dimension::default(),
             data: Vec::new(),
         }
+    }
+}
+
+impl Pix {
+    pub fn to_tuple(self) -> (u8, u8, u8, u8) {
+        (self.r, self.g, self.b, self.a)
     }
 }

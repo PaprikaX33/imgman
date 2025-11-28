@@ -1,5 +1,6 @@
 mod args;
 mod image;
+mod operation;
 use image::Image;
 use std::process::ExitCode;
 
@@ -16,7 +17,8 @@ fn main() -> anyhow::Result<ExitCode> {
         }
     };
     println!("{:?}", config);
-    let img = Image::open(config.source())?;
+    let mut img = Image::open(config.source())?;
+    let _ = img.apply_per_pixel(operation::grayscale);
     img.write(config.dest())?;
     Ok(ExitCode::SUCCESS)
 }
