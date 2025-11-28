@@ -1,6 +1,6 @@
 mod args;
 mod image;
-use image::Pix;
+use image::Image;
 use std::process::ExitCode;
 
 fn main() -> anyhow::Result<ExitCode> {
