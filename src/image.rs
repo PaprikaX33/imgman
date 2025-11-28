@@ -1,11 +1,11 @@
 use image::error::{ImageError, ImageResult};
 use std::{io::ErrorKind, vec::Vec};
 #[derive(Clone, Copy, Debug)]
-struct Pix {
-    r: u8,
-    g: u8,
-    b: u8,
-    a: u8,
+pub struct Pix {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: u8,
 }
 
 struct Dimension {
@@ -51,6 +51,14 @@ impl Image {
 
         Ok(())
     }
+
+    pub fn apply_per_pixel<F>(&mut self, oper: F) -> std::io::Result<()>
+    where
+        F: Fn(Pix) -> Pix,
+    {
+        self.data.iter_mut().for_each(|x| *x = oper(*x));
+        Ok(())
+    }
 }
 
 impl Default for Dimension {
@@ -71,5 +79,11 @@ impl Default for Image {
             dim: Dimension::default(),
             data: Vec::new(),
         }
+    }
+}
+
+impl Pix {
+    pub fn to_tuple(self) -> (u8, u8, u8, u8) {
+        (self.r, self.g, self.b, self.a)
     }
 }
