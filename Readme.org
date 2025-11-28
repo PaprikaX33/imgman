@@ -1,0 +1,13 @@
+* Image Manipulation
+  A simple rust program to test and experiment on various work with images
+
+** Target usage
+   The currently planned thing to do
+   - Greyscale
+   - Alpha Translation
+   - DFT based upscaling
+   - Other non-standard upscaling mechanism
+   - Downscaling
+   - JPG bitcrushing
+   - Image Mixing
+   - ETC
