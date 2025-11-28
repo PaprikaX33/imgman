@@ -1,6 +1,6 @@
 mod args;
-mod pixel;
-use pixel::Pix;
+mod image;
+use image::Image;
 use std::process::ExitCode;
 
 fn main() -> anyhow::Result<ExitCode> {
@@ -15,5 +15,8 @@ fn main() -> anyhow::Result<ExitCode> {
             }
         }
     };
+    println!("{:?}", config);
+    let img = Image::open(config.source())?;
+    img.write(config.dest())?;
     Ok(ExitCode::SUCCESS)
 }
