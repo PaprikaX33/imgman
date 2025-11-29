@@ -1,5 +1,5 @@
 use image::error::ImageResult;
-use std::{io::ErrorKind, vec::Vec};
+use std::vec::Vec;
 #[derive(Clone, Copy, Debug)]
 pub struct Pix {
     pub r: u8,
@@ -8,10 +8,13 @@ pub struct Pix {
     pub a: u8,
 }
 
+#[derive(Default)]
 struct Dimension {
     w: u32,
     h: u32,
 }
+
+#[derive(Default)]
 pub struct Image {
     dim: Dimension,
     data: std::vec::Vec<Pix>,
@@ -32,7 +35,7 @@ impl Image {
                 a: dot[3],
             })
             .collect();
-        return Ok(Self { data, dim });
+        Ok(Self { data, dim })
     }
 
     pub fn write(&self, path: &str) -> ImageResult<()> {
@@ -43,10 +46,8 @@ impl Image {
             .collect();
 
         let dim = &self.dim;
-        let out_img =
-            image::ImageBuffer::<image::Rgba<u8>, _>::from_raw(dim.w, dim.h, raw_data).ok_or(
-                std::io::Error::new(ErrorKind::Other, "Internal processing function error"),
-            )?;
+        let out_img = image::ImageBuffer::<image::Rgba<u8>, _>::from_raw(dim.w, dim.h, raw_data)
+            .ok_or(std::io::Error::other("Internal processing function error"))?;
         out_img.save(path)?;
 
         Ok(())
@@ -61,24 +62,9 @@ impl Image {
     }
 }
 
-impl Default for Dimension {
-    fn default() -> Self {
-        Self { w: 0, h: 0 }
-    }
-}
-
 impl From<(u32, u32)> for Dimension {
     fn from((w, h): (u32, u32)) -> Self {
         Self { w, h }
-    }
-}
-
-impl Default for Image {
-    fn default() -> Self {
-        Self {
-            dim: Dimension::default(),
-            data: Vec::new(),
-        }
     }
 }
 
