@@ -1,4 +1,4 @@
-use image::error::{ImageError, ImageResult};
+use image::error::ImageResult;
 use std::{io::ErrorKind, vec::Vec};
 #[derive(Clone, Copy, Debug)]
 pub struct Pix {

@@ -1,4 +1,4 @@
-use clap::{ArgGroup, Parser, ValueEnum};
+use clap::{ArgGroup, Parser};
 
 const DEST_SUFF: &str = ".png";
 
@@ -20,15 +20,15 @@ impl Args {
             dest
         };
         let source = parsed.source.trim().to_string();
-        let mode = if (parsed.gray) {
+        let mode = if parsed.gray {
             OperationType::Gray
-        } else if (parsed.gray_alp_dark) {
+        } else if parsed.gray_alp_dark {
             OperationType::GrayAlpDark
-        } else if (parsed.gray_alp) {
+        } else if parsed.gray_alp {
             OperationType::GrayAlp
-        } else if (parsed.copy) {
+        } else if parsed.copy {
             OperationType::Copy
-        } else if (parsed.alp_to_gray) {
+        } else if parsed.alp_to_gray {
             OperationType::AlpToGray
         } else {
             OperationType::Gray
