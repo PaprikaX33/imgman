@@ -41,6 +41,9 @@ impl Args {
     pub fn dest(&self) -> &str {
         &self.dest
     }
+    pub fn mode(&self) -> &OperationType {
+        &self.mode
+    }
 }
 
 #[derive(Parser)]
